@@ -14,5 +14,6 @@ val ColorDark = Color(0xFF15151A)
 val ColorWhite = Color(0xFFFFFFFF)
 val ColorWhiteTransparent15 = Color(0x26FFFFFF)
 val ColorWhiteTransparent50 = Color(0x80FFFFFF)
+val ColorWhiteTransparent70 = Color(0xB3FFFFFF)
 
 val ColorTextDark = Color(0xFF292A33)

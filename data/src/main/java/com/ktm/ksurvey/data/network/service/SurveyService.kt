@@ -1,4 +1,4 @@
-package com.ktm.ksurvey.data.network
+package com.ktm.ksurvey.data.network.service
 
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -6,5 +6,5 @@ class Survey(
     val title: String = "",
     val desc: String = "",
     val isActive: String = "",
-    val coverImageUrl: Int = 0,
+    val coverImageUrl: String = "",
 )

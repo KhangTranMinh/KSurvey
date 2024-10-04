@@ -6,7 +6,13 @@ import com.ktm.ksurvey.domain.repository.result.Result
 
 interface UserRepository {
 
-    suspend fun saveUser(user: User)
+    suspend fun login(email: String, password: String): Result<User, Error>
 
-    suspend fun getUser(): Result<User, Error>
+    suspend fun refreshToken(): Result<User, Error>
+
+    suspend fun fetchProfile(): Result<User, Error>
+
+    suspend fun updateUser(user: User)
+
+    suspend fun getUser(): User?
 }

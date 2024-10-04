@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,21 +27,23 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ktm.ksurvey.R
-import com.ktm.ksurvey.presentation.ui.theme.ColorWhite
+import com.ktm.ksurvey.presentation.ui.common.BUTTON_HEIGHT
+import com.ktm.ksurvey.presentation.ui.common.CORNER_RADIUS
+import com.ktm.ksurvey.presentation.ui.common.DefaultButton
+import com.ktm.ksurvey.presentation.ui.common.FullScreenImage
+import com.ktm.ksurvey.presentation.ui.common.PADDING_HORIZONTAL
+import com.ktm.ksurvey.presentation.ui.common.VerticalDivider
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent15
-import com.ktm.ksurvey.presentation.ui.theme.btnTextStyle
 import com.ktm.ksurvey.presentation.ui.theme.inputTextStyle
 import com.ktm.ksurvey.presentation.ui.theme.placeholderTextStyle
 
@@ -59,46 +59,30 @@ fun LoginScreenContainer(
     onNavigateToHomeScreen: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+        modifier = Modifier.fillMaxSize()
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.bg_login),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
-            contentScale = ContentScale.Crop
+        FullScreenImage(
+            painter = painterResource(id = R.drawable.bg_login)
         )
         Column(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(horizontal = 28.dp)
+                .padding(horizontal = PADDING_HORIZONTAL)
                 .align(alignment = Alignment.Center)
         ) {
-            val fieldHeight = 54.dp
             val spaceHeight = 16.dp
-            val cornerRadius = 32.dp
             val topAndBottomSpaceModifier = Modifier
                 .fillMaxWidth()
                 .weight(weight = 1F)
 
             ImageLogo(topAndBottomSpaceModifier)
-            EditTextEmail(
-                height = fieldHeight,
-                cornerRadius = cornerRadius
-            )
-            Divider(spaceHeight)
-            EditTextPassword(
-                height = fieldHeight,
-                cornerRadius = cornerRadius
-            )
-            Divider(spaceHeight)
-            ButtonLogin(
-                onNavigateToHomeScreen = onNavigateToHomeScreen,
-                height = fieldHeight,
-                cornerRadius = cornerRadius
+            EditTextEmail()
+            VerticalDivider(spaceHeight)
+            EditTextPassword()
+            VerticalDivider(spaceHeight)
+            DefaultButton(
+                onBtnClicked = onNavigateToHomeScreen,
+                text = stringResource(R.string.label_login)
             )
             Spacer(topAndBottomSpaceModifier)
         }
@@ -117,13 +101,6 @@ fun ImageLogo(modifier: Modifier) {
                 .align(alignment = Alignment.Center)
         )
     }
-}
-
-@Composable
-fun Divider(height: Dp) {
-    Spacer(
-        modifier = Modifier.size(height)
-    )
 }
 
 @Composable
@@ -176,11 +153,8 @@ fun EditTextBox(
 }
 
 @Composable
-fun EditTextEmail(
-    height: Dp,
-    cornerRadius: Dp,
-) {
-    EditTextBox(height, cornerRadius) {
+fun EditTextEmail() {
+    EditTextBox(BUTTON_HEIGHT, CORNER_RADIUS) {
         EditText(
             modifier = Modifier
                 .fillMaxSize(),
@@ -192,11 +166,8 @@ fun EditTextEmail(
 }
 
 @Composable
-fun EditTextPassword(
-    height: Dp,
-    cornerRadius: Dp,
-) {
-    EditTextBox(height, cornerRadius) {
+fun EditTextPassword() {
+    EditTextBox(BUTTON_HEIGHT, CORNER_RADIUS) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
@@ -217,28 +188,6 @@ fun EditTextPassword(
                 modifier = Modifier.size(16.dp)
             )
         }
-    }
-}
-
-@Composable
-fun ButtonLogin(
-    onNavigateToHomeScreen: () -> Unit,
-    height: Dp,
-    cornerRadius: Dp
-) {
-    Button(
-        onClick = onNavigateToHomeScreen,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height),
-        colors = ButtonDefaults.buttonColors(containerColor = ColorWhite),
-        shape = RoundedCornerShape(cornerRadius)
-    ) {
-        Text(
-            text = stringResource(R.string.label_login),
-            textAlign = TextAlign.Center,
-            style = btnTextStyle
-        )
     }
 }
 

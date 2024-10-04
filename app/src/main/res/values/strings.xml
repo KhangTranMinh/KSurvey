@@ -5,4 +5,5 @@
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
     <string name="label_forgot">Forgot?</string>
+    <string name="label_take_this_survey">Take This Survey</string>
 </resources>
