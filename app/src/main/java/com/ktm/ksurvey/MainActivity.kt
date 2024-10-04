@@ -5,16 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.ktm.ksurvey.presentation.ui.navigation.AppNavHost
 import com.ktm.ksurvey.presentation.ui.theme.KSurveyTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,13 +25,20 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KSurveyTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                    Loader()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNavHost(navController = rememberNavController())
                 }
+
+//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+//                    Greeting(
+//                        name = "Android",
+//                        modifier = Modifier.padding(innerPadding)
+//                    )
+//                    Loader()
+//                }
             }
         }
     }
@@ -43,13 +52,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Composable
-fun Loader() {
-    val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.lottie_congratulation)
-    )
-    LottieAnimation(composition)
-}
+
 
 @Preview(showBackground = true)
 @Composable

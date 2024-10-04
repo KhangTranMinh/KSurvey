@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">KSurvey</string>
+    <string name="label_thank_you">Thanks for taking\nthe survey</string>
+    <string name="label_login">Login</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_forgot">Forgot?</string>
 </resources>
