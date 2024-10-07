@@ -17,4 +17,8 @@ class RoomUserStore @Inject constructor(
     override suspend fun updateUser(user: User) {
         userDao.insert(UserDbModel.fromUser(user))
     }
+
+    override suspend fun delete() {
+        userDao.delete()
+    }
 }

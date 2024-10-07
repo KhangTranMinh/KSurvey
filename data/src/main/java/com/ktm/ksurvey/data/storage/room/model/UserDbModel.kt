@@ -18,7 +18,7 @@ class UserDbModel(
 ) {
 
     fun toUser(): User {
-        return User.createUser().also {
+        return User().also {
             it.id = this.id
             it.name = this.name
             it.email = this.email

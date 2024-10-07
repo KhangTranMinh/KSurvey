@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.room.Room
 import com.ktm.ksurvey.data.network.ApiConfig
 import com.ktm.ksurvey.data.network.service.AuthService
+import com.ktm.ksurvey.data.network.service.SurveyService
 import com.ktm.ksurvey.data.network.service.UserService
 import com.ktm.ksurvey.data.storage.room.db.KSurveyDatabase
+import com.ktm.ksurvey.data.storage.room.db.SurveyDao
 import com.ktm.ksurvey.data.storage.room.db.UserDao
+import com.ktm.ksurvey.presentation.util.Const
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,7 +47,7 @@ object ApplicationModule {
         return Room.databaseBuilder(
             context,
             KSurveyDatabase::class.java,
-            "KSurveyDatabase"
+            Const.DATABASE_NAME
         ).build()
     }
 
@@ -56,6 +59,13 @@ object ApplicationModule {
     }
 
     @Provides
+    fun provideSurveyDao(
+        database: KSurveyDatabase
+    ): SurveyDao {
+        return database.surveyDao()
+    }
+
+    @Provides
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
     }
@@ -63,5 +73,10 @@ object ApplicationModule {
     @Provides
     fun provideUserService(retrofit: Retrofit): UserService {
         return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    fun provideSurveyService(retrofit: Retrofit): SurveyService {
+        return retrofit.create(SurveyService::class.java)
     }
 }

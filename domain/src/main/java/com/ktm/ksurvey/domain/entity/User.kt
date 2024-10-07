@@ -1,8 +1,6 @@
 package com.ktm.ksurvey.domain.entity
 
-import java.util.UUID
-
-class User private constructor(
+class User(
     var id: String = "",
     var email: String = "",
     var name: String = "",
@@ -14,7 +12,7 @@ class User private constructor(
     var createdAt: Long = 0L,
 ) {
 
-    val tokenExpiryTimeMillis: Long
+    private val tokenExpiryTimeMillis: Long
         get() = (createdAt + expiresIn) * 1000L
 
     fun isAccessTokenValid(): Boolean {
@@ -28,7 +26,5 @@ class User private constructor(
 
     companion object {
         const val TOKEN_EXPIRY_THRESHOLD = 600_000L // 10 minutes
-
-        fun createUser(): User = User(id = UUID.randomUUID().toString())
     }
 }

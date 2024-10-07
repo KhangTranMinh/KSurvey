@@ -1,5 +1,7 @@
 package com.ktm.ksurvey.presentation.ui.common
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,22 +28,31 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ktm.ksurvey.presentation.ui.theme.ColorBlackTransparent50
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhite
+import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent70
 import com.ktm.ksurvey.presentation.ui.theme.btnTextStyle
 
 val CORNER_RADIUS = 32.dp
 val BUTTON_HEIGHT = 54.dp
 val PADDING_HORIZONTAL = 28.dp
+val MENU_ITEM_HEIGHT = 56.dp
+val MENU_PADDING_HORIZONTAL = 16.dp
 
 val roundedCornerShape = RoundedCornerShape(CORNER_RADIUS)
 
+val showToast: (context: Context, message: String) -> Unit =
+    { context, message ->
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
 @Composable
 fun FullScreenImage(
+    modifier: Modifier = Modifier,
     painter: Painter
 ) {
     Image(
         painter = painter,
         contentDescription = null,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
     )
 }
@@ -82,12 +93,13 @@ fun VerticalDivider(
 }
 
 @Composable
-fun LoadingView() {
+fun LoadingView(
+    modifier: Modifier
+) {
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .background(
                 color = ColorBlackTransparent50
             )
@@ -99,7 +111,8 @@ fun LoadingView() {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.size(48.dp, 48.dp)
+            modifier = Modifier.size(48.dp, 48.dp),
+            color = ColorWhiteTransparent70
         )
     }
 }

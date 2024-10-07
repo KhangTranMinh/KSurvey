@@ -1,7 +1,9 @@
-package com.ktm.ksurvey.presentation.util
+package com.ktm.ksurvey.data.util
 
-import com.ktm.ksurvey.presentation.viewmodel.AuthViewModel
-import com.ktm.ksurvey.presentation.viewmodel.HomeViewModel
+import com.ktm.ksurvey.data.repository.SurveyRepositoryImpl
+import com.ktm.ksurvey.data.repository.UserRepositoryImpl
+import com.ktm.ksurvey.data.storage.SurveyStore
+import com.ktm.ksurvey.data.storage.UserStore
 
 class Logger(private val clazz: String) {
 
@@ -18,16 +20,19 @@ class Logger(private val clazz: String) {
         android.util.Log.d(TAG, "$clazz | $message")
     }
 
-    fun log(message: String, throwable: Throwable) {
+    fun log(message: String, throwable: Throwable?) {
         android.util.Log.e(TAG, "$clazz | $message", throwable)
     }
 }
 
-fun AuthViewModel.log(message: String) {
+fun UserRepositoryImpl.log(message: String) {
     Logger.get(this::class.java.simpleName).log(message)
 }
 
-fun HomeViewModel.log(message: String) {
+fun SurveyRepositoryImpl.log(message: String) {
     Logger.get(this::class.java.simpleName).log(message)
 }
 
+fun SurveyStore.log(message: String) {
+    Logger.get(this::class.java.simpleName).log(message)
+}

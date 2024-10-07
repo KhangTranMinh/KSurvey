@@ -5,7 +5,6 @@ import com.ktm.ksurvey.data.network.data.RefreshTokenRequest
 import com.ktm.ksurvey.data.network.data.RefreshTokenResponse
 import com.ktm.ksurvey.data.network.service.AuthService
 import com.ktm.ksurvey.data.storage.UserStore
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class RefreshTokenApi @Inject constructor(
@@ -15,7 +14,6 @@ class RefreshTokenApi @Inject constructor(
 
     override suspend fun execute(request: BaseRequest?): RefreshTokenResponse {
         return runCatching {
-            delay(500L)
             val user = userStore.getUser()
             authService.refreshToken(
                 RefreshTokenRequest(refreshToken = user?.refreshToken ?: "")

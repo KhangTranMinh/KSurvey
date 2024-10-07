@@ -13,8 +13,12 @@ val Pink40 = Color(0xFF7D5260)
 val ColorDark = Color(0xFF15151A)
 val ColorWhite = Color(0xFFFFFFFF)
 val ColorWhiteTransparent15 = Color(0x26FFFFFF)
+val ColorWhiteTransparent20 = Color(0x33FFFFFF)
+val ColorWhiteTransparent30 = Color(0x4DFFFFFF)
 val ColorWhiteTransparent50 = Color(0x80FFFFFF)
 val ColorWhiteTransparent70 = Color(0xB3FFFFFF)
 val ColorBlackTransparent50 = Color(0x80000000)
 
 val ColorTextDark = Color(0xFF292A33)
+
+val ColorMenu = Color(0xE61E1E1E)

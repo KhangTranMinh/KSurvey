@@ -10,8 +10,11 @@ import com.ktm.ksurvey.data.storage.room.model.UserDbModel
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(userDbModel: UserDbModel)
+    suspend fun insert(userDbModel: UserDbModel)
 
     @Query("SELECT * FROM userdbmodel LIMIT 1")
-    fun getUser(): UserDbModel?
+    suspend fun getUser(): UserDbModel?
+
+    @Query("DELETE FROM userdbmodel")
+    suspend fun delete()
 }

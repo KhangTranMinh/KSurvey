@@ -7,4 +7,6 @@ interface UserStore {
     suspend fun getUser(): User?
 
     suspend fun updateUser(user: User)
+
+    suspend fun delete()
 }

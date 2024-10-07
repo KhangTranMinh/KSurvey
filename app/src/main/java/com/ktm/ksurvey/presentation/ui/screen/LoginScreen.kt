@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +47,7 @@ import com.ktm.ksurvey.presentation.ui.common.FullScreenImage
 import com.ktm.ksurvey.presentation.ui.common.LoadingView
 import com.ktm.ksurvey.presentation.ui.common.PADDING_HORIZONTAL
 import com.ktm.ksurvey.presentation.ui.common.VerticalDivider
+import com.ktm.ksurvey.presentation.ui.common.showToast
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent15
 import com.ktm.ksurvey.presentation.ui.theme.inputTextStyle
 import com.ktm.ksurvey.presentation.ui.theme.placeholderTextStyle
@@ -64,6 +66,8 @@ fun LoginScreen(
         authViewModel = authViewModel
     )
 
+    val context = LocalContext.current
+
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     LaunchedEffect(authViewModel, lifecycle) {
         authViewModel.loginUiState.flowWithLifecycle(lifecycle).collect {
@@ -76,10 +80,12 @@ fun LoginScreen(
 
                 is LoginUiState.ErrorCode -> {
                     loadingState.value = false
+                    showToast(context, "Error happens! (error code: ${it.errorCode})")
                 }
 
                 is LoginUiState.ErrorException -> {
                     loadingState.value = true
+                    showToast(context, "Error happens!")
                 }
 
                 LoginUiState.Success -> {
@@ -99,10 +105,8 @@ fun LoginScreenContainer(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-//        val emailState = remember { mutableStateOf("tran.minhkhang.1989@gmail.com") }
-//        val passwordState = remember { mutableStateOf("12345678") }
-        val emailState = remember { mutableStateOf("") }
-        val passwordState = remember { mutableStateOf("") }
+        val emailState = remember { mutableStateOf("tran.minhkhang.1989@gmail.com") }
+        val passwordState = remember { mutableStateOf("12345678") }
 
         val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -139,7 +143,9 @@ fun LoginScreenContainer(
         }
 
         if (loadingState.value) {
-            LoadingView()
+            LoadingView(
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }

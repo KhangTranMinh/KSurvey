@@ -10,17 +10,7 @@ class UserUseCase(
 ) {
 
     suspend fun login(email: String, password: String): Result<User, Error> {
-        val loginResult = userRepository.login(email, password)
-        return if (loginResult is Result.Success) {
-            val fetchProfileResult = userRepository.fetchProfile()
-            if (fetchProfileResult is Result.Success) {
-                Result.Success(data = fetchProfileResult.data)
-            } else {
-                fetchProfileResult
-            }
-        } else {
-            loginResult
-        }
+        return userRepository.login(email, password)
     }
 
     suspend fun validateUserToken(): Boolean {
@@ -34,6 +24,11 @@ class UserUseCase(
         return refreshTokenResult is Result.Success
     }
 
-    suspend fun logout() {
+    suspend fun clearUserData() {
+        userRepository.clearData()
+    }
+
+    suspend fun logout(): Result<Any, Error> {
+        return userRepository.logout()
     }
 }

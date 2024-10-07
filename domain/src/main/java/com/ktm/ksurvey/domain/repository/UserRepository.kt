@@ -10,9 +10,9 @@ interface UserRepository {
 
     suspend fun refreshToken(): Result<User, Error>
 
-    suspend fun fetchProfile(): Result<User, Error>
-
-    suspend fun updateUser(user: User)
+    suspend fun logout(): Result<Any, Error>
 
     suspend fun getUser(): User?
+
+    suspend fun clearData()
 }

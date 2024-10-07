@@ -2,9 +2,11 @@ package com.ktm.ksurvey.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ktm.ksurvey.domain.repository.SurveyRepository
 import com.ktm.ksurvey.domain.repository.UserRepository
 import com.ktm.ksurvey.domain.repository.result.Error
 import com.ktm.ksurvey.domain.repository.result.Result
+import com.ktm.ksurvey.domain.usecase.SurveyUseCase
 import com.ktm.ksurvey.domain.usecase.UserUseCase
 import com.ktm.ksurvey.presentation.util.log
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    userRepository: UserRepository
+    userRepository: UserRepository,
+    surveyRepository: SurveyRepository
 ) : ViewModel() {
 
     private val userUseCase = UserUseCase(userRepository)
+    private val surveyUseCase = SurveyUseCase(userRepository, surveyRepository)
 
     var splashUiState = MutableStateFlow<SplashUiState>(SplashUiState.Default)
         private set
@@ -35,6 +39,8 @@ class AuthViewModel @Inject constructor(
                 if (result) {
                     splashUiState.value = SplashUiState.Home
                 } else {
+                    surveyUseCase.clearSurveyData()
+                    userUseCase.clearUserData()
                     splashUiState.value = SplashUiState.Login
                 }
             }
@@ -44,8 +50,8 @@ class AuthViewModel @Inject constructor(
     fun login(email: String, password: String) {
         log("login($email, $password)")
         viewModelScope.launch {
+            loginUiState.value = LoginUiState.Loading
             withContext(Dispatchers.Default) {
-                loginUiState.value = LoginUiState.Loading
                 when (val result = userUseCase.login(email, password)) {
                     is Result.Error -> {
                         when (val error = result.error) {

@@ -3,13 +3,13 @@ package com.ktm.ksurvey.data.network.data
 import com.google.gson.annotations.SerializedName
 import com.ktm.ksurvey.data.network.ErrorCode
 
-class FetchProfileRequest(
-    val tokenType: String,
-    val accessToken: String,
+class FetchSurveysRequest(
+    val pageNumber: Int,
+    val pageSize: Int
 ) : BaseRequest
 
-class FetchProfileResponse(
-    @SerializedName("data") val data: Data?,
+class FetchSurveysResponse(
+    @SerializedName("data") val data: List<Data>?,
 ) : BaseResponse {
 
     override var errorCode: Int = ErrorCode.SUCCESS
@@ -21,9 +21,10 @@ class FetchProfileResponse(
     ) {
 
         class Attributes(
-            @SerializedName("email") val email: String?,
-            @SerializedName("name") val name: String?,
-            @SerializedName("avatar_url") val avatarUrl: String?,
+            @SerializedName("title") val title: String?,
+            @SerializedName("description") val description: String?,
+            @SerializedName("is_active") val isActive: Boolean,
+            @SerializedName("cover_image_url") val coverImageUrl: String?,
         )
     }
 }

@@ -48,6 +48,10 @@ fun AppNavHost(
             HomeScreen(
                 onNavigateToThankYouScreen = {
                     navController.navigate(route = AppScreen.THANK_YOU.name)
+                },
+                onNavigateLogout = {
+                    navController.popBackStack()
+                    navController.navigate(route = AppScreen.LOGIN.name)
                 }
             )
         }

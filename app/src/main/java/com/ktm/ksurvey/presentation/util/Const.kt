@@ -2,5 +2,7 @@ package com.ktm.ksurvey.presentation.util
 
 object Const {
 
-    const val ITEM_PER_PAGE = 20
+    const val DATABASE_NAME = "KSurveyDatabase"
+
+    const val SURVEY_PAGE_SIZE = 10
 }

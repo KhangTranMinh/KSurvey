@@ -4,7 +4,9 @@ import com.ktm.ksurvey.domain.entity.Survey
 
 interface SurveyStore {
 
-    suspend fun getSurveys(page: Int, count: Int): List<Survey>
+    suspend fun getSurveys(userId: String, pageNumber: Int, pageSize: Int): List<Survey>
 
     suspend fun saveSurveys(surveys: List<Survey>)
+
+    suspend fun delete()
 }
