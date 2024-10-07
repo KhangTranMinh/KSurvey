@@ -1,11 +1,11 @@
 package com.ktm.ksurvey.data.network.api
 
-import com.ktm.ksurvey.data.network.ErrorCode
 import com.ktm.ksurvey.data.network.data.BaseRequest
 import com.ktm.ksurvey.data.network.data.RefreshTokenRequest
 import com.ktm.ksurvey.data.network.data.RefreshTokenResponse
 import com.ktm.ksurvey.data.network.service.AuthService
 import com.ktm.ksurvey.data.storage.UserStore
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class RefreshTokenApi @Inject constructor(
@@ -15,15 +15,13 @@ class RefreshTokenApi @Inject constructor(
 
     override suspend fun execute(request: BaseRequest?): RefreshTokenResponse {
         return runCatching {
+            delay(500L)
             val user = userStore.getUser()
             authService.refreshToken(
                 RefreshTokenRequest(refreshToken = user?.refreshToken ?: "")
             )
         }.getOrElse {
-            // handle API error code here
-            RefreshTokenResponse(data = null).apply {
-                this.errorCode = ErrorCode.UNKNOWN
-            }
+            RefreshTokenResponse(data = null).apply { errorCode = getHttpErrorCode(it) }
         }
     }
 }

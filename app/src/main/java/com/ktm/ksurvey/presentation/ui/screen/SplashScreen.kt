@@ -23,27 +23,28 @@ fun SplashScreen(
     onNavigateToLoginScreen: () -> Unit,
     onNavigateToHomeScreen: () -> Unit,
 ) {
-//    val currentNavigateToLoginScreen by rememberUpdatedState(onNavigateToLoginScreen)
-//    val currentNavigateToHomeScreen by rememberUpdatedState(onNavigateToHomeScreen)
-
     SplashScreenContainer()
 
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     LaunchedEffect(authViewModel, lifecycle) {
         delay(1000L)
 
+        authViewModel.validateUser()
+
         // Whenever the uiState changes
         // call the event when `lifecycle` is at least STARTED
-        authViewModel.validateUser()
         authViewModel.splashUiState.flowWithLifecycle(lifecycle).collect {
             when (it) {
                 SplashUiState.Default -> {}
-                SplashUiState.Home -> onNavigateToHomeScreen()
-                SplashUiState.Login -> onNavigateToLoginScreen()
+                SplashUiState.Home -> {
+                    onNavigateToHomeScreen()
+                }
 
+                SplashUiState.Login -> {
+                    onNavigateToLoginScreen()
+                }
             }
         }
-
     }
 }
 

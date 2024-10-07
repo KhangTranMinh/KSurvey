@@ -74,9 +74,9 @@ class UserRepositoryImpl @Inject constructor(
             if (response.isSuccess()) {
                 val attributes = response.data?.attributes
                 user.apply {
-                    email = attributes?.name ?: ""
+                    email = attributes?.email ?: ""
                     name = attributes?.name ?: ""
-                    avatarUrl = attributes?.name ?: ""
+                    avatarUrl = attributes?.avatarUrl ?: ""
                 }
                 userStore.updateUser(user)
                 Result.Success(data = user)

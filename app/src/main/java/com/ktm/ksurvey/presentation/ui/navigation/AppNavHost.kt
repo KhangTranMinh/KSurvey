@@ -3,7 +3,6 @@ package com.ktm.ksurvey.presentation.ui.navigation
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -11,13 +10,11 @@ import com.ktm.ksurvey.presentation.ui.screen.HomeScreen
 import com.ktm.ksurvey.presentation.ui.screen.LoginScreen
 import com.ktm.ksurvey.presentation.ui.screen.SplashScreen
 import com.ktm.ksurvey.presentation.ui.screen.ThankYouScreen
-import com.ktm.ksurvey.presentation.viewmodel.MainViewModel
 
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    mainViewModel: MainViewModel,
     startDestination: String = AppScreen.SPLASH.name,
 ) {
 
@@ -49,7 +46,6 @@ fun AppNavHost(
         }
         composable(route = AppScreen.HOME.name) {
             HomeScreen(
-                mainViewModel = mainViewModel,
                 onNavigateToThankYouScreen = {
                     navController.navigate(route = AppScreen.THANK_YOU.name)
                 }

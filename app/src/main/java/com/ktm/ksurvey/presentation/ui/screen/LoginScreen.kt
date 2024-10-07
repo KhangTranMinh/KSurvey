@@ -20,47 +20,92 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import com.ktm.ksurvey.R
 import com.ktm.ksurvey.presentation.ui.common.BUTTON_HEIGHT
 import com.ktm.ksurvey.presentation.ui.common.CORNER_RADIUS
 import com.ktm.ksurvey.presentation.ui.common.DefaultButton
 import com.ktm.ksurvey.presentation.ui.common.FullScreenImage
+import com.ktm.ksurvey.presentation.ui.common.LoadingView
 import com.ktm.ksurvey.presentation.ui.common.PADDING_HORIZONTAL
 import com.ktm.ksurvey.presentation.ui.common.VerticalDivider
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent15
 import com.ktm.ksurvey.presentation.ui.theme.inputTextStyle
 import com.ktm.ksurvey.presentation.ui.theme.placeholderTextStyle
+import com.ktm.ksurvey.presentation.viewmodel.AuthViewModel
+import com.ktm.ksurvey.presentation.viewmodel.LoginUiState
 
 @Composable
 fun LoginScreen(
+    authViewModel: AuthViewModel = hiltViewModel(),
     onNavigateToHomeScreen: () -> Unit,
 ) {
-    LoginScreenContainer(onNavigateToHomeScreen)
+    val loadingState = remember { mutableStateOf(false) }
+
+    LoginScreenContainer(
+        loadingState = loadingState,
+        authViewModel = authViewModel
+    )
+
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(authViewModel, lifecycle) {
+        authViewModel.loginUiState.flowWithLifecycle(lifecycle).collect {
+            when (it) {
+                LoginUiState.Default -> {}
+
+                LoginUiState.Loading -> {
+                    loadingState.value = true
+                }
+
+                is LoginUiState.ErrorCode -> {
+                    loadingState.value = false
+                }
+
+                is LoginUiState.ErrorException -> {
+                    loadingState.value = true
+                }
+
+                LoginUiState.Success -> {
+                    loadingState.value = false
+                    onNavigateToHomeScreen()
+                }
+            }
+        }
+    }
 }
 
 @Composable
 fun LoginScreenContainer(
-    onNavigateToHomeScreen: () -> Unit
+    loadingState: MutableState<Boolean>,
+    authViewModel: AuthViewModel,
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
+//        val emailState = remember { mutableStateOf("tran.minhkhang.1989@gmail.com") }
+//        val passwordState = remember { mutableStateOf("12345678") }
+        val emailState = remember { mutableStateOf("") }
+        val passwordState = remember { mutableStateOf("") }
+
+        val keyboardController = LocalSoftwareKeyboardController.current
+
         FullScreenImage(
             painter = painterResource(id = R.drawable.bg_login)
         )
@@ -76,15 +121,25 @@ fun LoginScreenContainer(
                 .weight(weight = 1F)
 
             ImageLogo(topAndBottomSpaceModifier)
-            EditTextEmail()
+            EditTextEmail(emailState)
             VerticalDivider(spaceHeight)
-            EditTextPassword()
+            EditTextPassword(passwordState)
             VerticalDivider(spaceHeight)
             DefaultButton(
-                onBtnClicked = onNavigateToHomeScreen,
+                onBtnClicked = {
+                    keyboardController?.hide()
+                    authViewModel.login(
+                        email = emailState.value,
+                        password = passwordState.value
+                    )
+                },
                 text = stringResource(R.string.label_login)
             )
             Spacer(topAndBottomSpaceModifier)
+        }
+
+        if (loadingState.value) {
+            LoadingView()
         }
     }
 }
@@ -105,15 +160,15 @@ fun ImageLogo(modifier: Modifier) {
 
 @Composable
 fun EditText(
+    textState: MutableState<String>,
     modifier: Modifier,
     placeholder: String,
     visualTransformation: VisualTransformation,
     keyboardType: KeyboardType
 ) {
-    var inputText by remember { mutableStateOf(TextFieldValue("")) }
     TextField(
-        value = inputText,
-        onValueChange = { newInputText -> inputText = newInputText },
+        value = textState.value,
+        onValueChange = { newInputText -> textState.value = newInputText },
         modifier = modifier,
         singleLine = true,
         placeholder = {
@@ -153,9 +208,12 @@ fun EditTextBox(
 }
 
 @Composable
-fun EditTextEmail() {
+fun EditTextEmail(
+    emailState: MutableState<String>
+) {
     EditTextBox(BUTTON_HEIGHT, CORNER_RADIUS) {
         EditText(
+            textState = emailState,
             modifier = Modifier
                 .fillMaxSize(),
             placeholder = stringResource(R.string.label_email),
@@ -166,13 +224,16 @@ fun EditTextEmail() {
 }
 
 @Composable
-fun EditTextPassword() {
+fun EditTextPassword(
+    passwordState: MutableState<String>
+) {
     EditTextBox(BUTTON_HEIGHT, CORNER_RADIUS) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxSize()
         ) {
             EditText(
+                textState = passwordState,
                 modifier = Modifier
                     .weight(1F)
                     .fillMaxHeight(),
@@ -189,10 +250,4 @@ fun EditTextPassword() {
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun LoginScreenPreview() {
-    LoginScreenContainer { }
 }

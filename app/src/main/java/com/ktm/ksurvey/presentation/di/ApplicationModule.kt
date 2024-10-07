@@ -1,4 +1,4 @@
-package com.ktm.ksurvey.di
+package com.ktm.ksurvey.presentation.di
 
 import android.content.Context
 import androidx.room.Room

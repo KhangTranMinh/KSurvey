@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor() : ViewModel() {
 
     private val _surveyState: MutableStateFlow<PagingData<Survey>> =
         MutableStateFlow(value = PagingData.empty())

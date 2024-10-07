@@ -6,10 +6,10 @@ import com.ktm.ksurvey.domain.repository.UserRepository
 import com.ktm.ksurvey.domain.repository.result.Error
 import com.ktm.ksurvey.domain.repository.result.Result
 import com.ktm.ksurvey.domain.usecase.UserUseCase
+import com.ktm.ksurvey.presentation.util.log
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,11 +24,11 @@ class AuthViewModel @Inject constructor(
     var splashUiState = MutableStateFlow<SplashUiState>(SplashUiState.Default)
         private set
 
-    private val _loginUiState: MutableStateFlow<LoginUiState> =
-        MutableStateFlow(value = LoginUiState.Default)
-    val loginUiState: StateFlow<LoginUiState> = _loginUiState
+    var loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Default)
+        private set
 
     fun validateUser() {
+        log("validateUser")
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
                 val result = userUseCase.validateUserToken()
@@ -42,23 +42,25 @@ class AuthViewModel @Inject constructor(
     }
 
     fun login(email: String, password: String) {
+        log("login($email, $password)")
         viewModelScope.launch {
             withContext(Dispatchers.Default) {
+                loginUiState.value = LoginUiState.Loading
                 when (val result = userUseCase.login(email, password)) {
                     is Result.Error -> {
                         when (val error = result.error) {
                             is Error.ApiError -> {
-                                _loginUiState.value = LoginUiState.ErrorCode(error.errorCode)
+                                loginUiState.value = LoginUiState.ErrorCode(error.errorCode)
                             }
 
                             is Error.GeneralError -> {
-                                _loginUiState.value = LoginUiState.ErrorException(error.throwable)
+                                loginUiState.value = LoginUiState.ErrorException(error.throwable)
                             }
                         }
                     }
 
                     is Result.Success -> {
-                        _loginUiState.value = LoginUiState.Success
+                        loginUiState.value = LoginUiState.Success
                     }
                 }
             }
@@ -68,6 +70,7 @@ class AuthViewModel @Inject constructor(
 
 sealed class LoginUiState {
     data object Default : LoginUiState()
+    data object Loading : LoginUiState()
     data object Success : LoginUiState()
     data class ErrorCode(val errorCode: Int) : LoginUiState()
     data class ErrorException(val throwable: Throwable) : LoginUiState()

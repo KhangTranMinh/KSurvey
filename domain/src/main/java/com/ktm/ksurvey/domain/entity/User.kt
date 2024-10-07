@@ -14,7 +14,8 @@ class User private constructor(
     var createdAt: Long = 0L,
 ) {
 
-    val tokenExpiryTimeMillis = (createdAt + expiresIn) * 1000L
+    val tokenExpiryTimeMillis: Long
+        get() = (createdAt + expiresIn) * 1000L
 
     fun isAccessTokenValid(): Boolean {
         return accessToken.isNotBlank() && System.currentTimeMillis() < tokenExpiryTimeMillis

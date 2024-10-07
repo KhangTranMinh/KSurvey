@@ -9,7 +9,7 @@ class LoginRequest(
     @SerializedName("email") val email: String,
     @SerializedName("password") val password: String,
     @SerializedName("client_id") val clientId: String = ApiConfig.CLIENT_ID,
-    @SerializedName("client_id") val clientSecret: String = ApiConfig.CLIENT_SECRET,
+    @SerializedName("client_secret") val clientSecret: String = ApiConfig.CLIENT_SECRET,
 ) : BaseRequest
 
 class LoginResponse(

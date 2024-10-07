@@ -1,4 +1,4 @@
-package com.ktm.ksurvey
+package com.ktm.ksurvey.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,13 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.ktm.ksurvey.presentation.ui.navigation.AppNavHost
 import com.ktm.ksurvey.presentation.ui.theme.KSurveyTheme
-import com.ktm.ksurvey.presentation.viewmodel.MainViewModel
+import com.ktm.ksurvey.presentation.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
-    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +29,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     AppNavHost(
                         navController = rememberNavController(),
-                        mainViewModel = mainViewModel
                     )
                 }
             }

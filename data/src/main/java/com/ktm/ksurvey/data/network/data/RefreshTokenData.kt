@@ -8,7 +8,7 @@ class RefreshTokenRequest(
     @SerializedName("grant_type") val grantType: String = ApiConfig.GRANT_TYPE_REFRESH_TOKEN,
     @SerializedName("refresh_token") val refreshToken: String,
     @SerializedName("client_id") val clientId: String = ApiConfig.CLIENT_ID,
-    @SerializedName("client_id") val clientSecret: String = ApiConfig.CLIENT_SECRET,
+    @SerializedName("client_secret") val clientSecret: String = ApiConfig.CLIENT_SECRET,
 ) : BaseRequest
 
 class RefreshTokenResponse(

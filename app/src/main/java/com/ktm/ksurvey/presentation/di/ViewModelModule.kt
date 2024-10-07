@@ -1,4 +1,4 @@
-package com.ktm.ksurvey.di
+package com.ktm.ksurvey.presentation.di
 
 import com.ktm.ksurvey.data.repository.UserRepositoryImpl
 import com.ktm.ksurvey.data.storage.UserStore

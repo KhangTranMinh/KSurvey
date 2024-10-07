@@ -21,7 +21,7 @@ class SurveyPagingSource(
                 val surveys = arrayListOf<Survey>()
                 repeat(5) {
                     val id = UUID.randomUUID().toString()
-                    android.util.Log.d("KSurvey", "id: $id")
+//                    android.util.Log.d("KSurvey", "id: $id")
                     surveys.add(
                         Survey(
                             id = id,

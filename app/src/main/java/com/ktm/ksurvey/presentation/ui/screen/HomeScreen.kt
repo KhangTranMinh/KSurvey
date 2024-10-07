@@ -31,10 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.ktm.ksurvey.presentation.viewmodel.MainViewModel
 import com.ktm.ksurvey.R
 import com.ktm.ksurvey.domain.entity.Survey
 import com.ktm.ksurvey.presentation.ui.common.BUTTON_HEIGHT
@@ -46,28 +46,29 @@ import com.ktm.ksurvey.presentation.ui.theme.ColorDark
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhite
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent15
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent70
+import com.ktm.ksurvey.presentation.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(
-    mainViewModel: MainViewModel,
+    homeViewModel: HomeViewModel = hiltViewModel(),
     onNavigateToThankYouScreen: () -> Unit,
 ) {
     LaunchedEffect(true) {
-        mainViewModel.fetchSurveys()
+        homeViewModel.fetchSurveys()
     }
 
     HomeScreenContainer(
-        mainViewModel = mainViewModel,
+        homeViewModel = homeViewModel,
         onBtnClicked = onNavigateToThankYouScreen
     )
 }
 
 @Composable
 fun HomeScreenContainer(
-    mainViewModel: MainViewModel,
+    homeViewModel: HomeViewModel,
     onBtnClicked: () -> Unit,
 ) {
-    val pagingItems = mainViewModel.surveyState.collectAsLazyPagingItems()
+    val pagingItems = homeViewModel.surveyState.collectAsLazyPagingItems()
 
     Box(
         modifier = Modifier.fillMaxSize()
