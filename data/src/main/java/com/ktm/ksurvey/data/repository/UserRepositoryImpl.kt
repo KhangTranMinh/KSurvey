@@ -10,7 +10,6 @@ import com.ktm.ksurvey.data.network.data.LogoutRequest
 import com.ktm.ksurvey.data.network.data.RefreshTokenRequest
 import com.ktm.ksurvey.data.storage.SurveyStore
 import com.ktm.ksurvey.data.storage.UserStore
-import com.ktm.ksurvey.data.util.log
 import com.ktm.ksurvey.domain.entity.User
 import com.ktm.ksurvey.domain.repository.UserRepository
 import com.ktm.ksurvey.domain.repository.result.Error
@@ -111,7 +110,6 @@ class UserRepositoryImpl @Inject constructor(
                 createdAt = tokenData.createdAt
             }
             userStore.updateUser(user)
-            log("fetchProfile, user: ${user.id}")
             Result.Success(data = user)
         } else {
             Result.Error(error = Error.ApiError(errorCode = response.errorCode))

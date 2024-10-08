@@ -3,7 +3,6 @@ package com.ktm.ksurvey.data.storage.room
 import com.ktm.ksurvey.data.storage.SurveyStore
 import com.ktm.ksurvey.data.storage.room.db.SurveyDao
 import com.ktm.ksurvey.data.storage.room.model.SurveyDbModel
-import com.ktm.ksurvey.data.util.log
 import com.ktm.ksurvey.domain.entity.Survey
 import javax.inject.Inject
 
@@ -18,7 +17,6 @@ class RoomSurveyStore @Inject constructor(
         ).forEach {
             surveys.add(it.toSurvey())
         }
-        log("get local | pageNumber: $pageNumber, pageSize: $pageSize, surveys: ${surveys.size}")
         return surveys
     }
 

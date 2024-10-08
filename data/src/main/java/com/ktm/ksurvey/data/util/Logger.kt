@@ -3,7 +3,6 @@ package com.ktm.ksurvey.data.util
 import com.ktm.ksurvey.data.repository.SurveyRepositoryImpl
 import com.ktm.ksurvey.data.repository.UserRepositoryImpl
 import com.ktm.ksurvey.data.storage.SurveyStore
-import com.ktm.ksurvey.data.storage.UserStore
 
 class Logger(private val clazz: String) {
 

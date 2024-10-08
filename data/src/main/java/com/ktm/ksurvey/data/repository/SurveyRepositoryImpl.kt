@@ -4,7 +4,6 @@ import com.ktm.ksurvey.data.network.api.FetchSurveysApi
 import com.ktm.ksurvey.data.network.data.FetchSurveysRequest
 import com.ktm.ksurvey.data.storage.SurveyStore
 import com.ktm.ksurvey.data.storage.UserStore
-import com.ktm.ksurvey.data.util.log
 import com.ktm.ksurvey.domain.entity.Survey
 import com.ktm.ksurvey.domain.repository.SurveyRepository
 import com.ktm.ksurvey.domain.repository.result.Error
@@ -35,12 +34,10 @@ class SurveyRepositoryImpl @Inject constructor(
             //     3. update new page 0 into local storage
             //   then back to the normal behavior, check local storage first, if not found, fetch remote
             if (isForceRefresh && pageNumber == 0) {
-                log("force refresh")
                 val forceRefreshResult = fetchSurveysRemote(
                     userId = user.id, pageNumber = 1, pageSize = pageSize
                 )
                 if (forceRefreshResult is Result.Success) {
-                    log("delete all records and add the new page 0")
                     surveyStore.delete()
                     surveyStore.saveSurveys(forceRefreshResult.data)
                 }
@@ -88,7 +85,6 @@ class SurveyRepositoryImpl @Inject constructor(
                     )
                 )
             }
-            log("fetch remote | pageNumber: $pageNumber, pageSize: $pageSize, surveys: ${surveys.size}")
             Result.Success(surveys)
         } else {
             Result.Error(error = Error.ApiError(errorCode = response.errorCode))
