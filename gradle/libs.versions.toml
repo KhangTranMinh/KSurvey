@@ -24,6 +24,12 @@ navigationCompose = "2.8.2"
 pagingCompose = "3.3.2"
 androidxMaterial = "1.7.3"
 
+core = "1.6.1"
+mockitoCore = "5.14.1"
+mockitoKotlin = "5.4.0"
+mockk = "1.13.12"
+kotlinxCoroutinesTest = "1.9.0-RC.2"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -63,6 +69,12 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 
 androidx-material = { module = "androidx.compose.material:material", version.ref = "androidxMaterial" }
+
+androidx-core = { module = "androidx.test:core", version.ref = "core" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

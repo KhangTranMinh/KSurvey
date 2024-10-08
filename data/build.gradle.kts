@@ -55,6 +55,11 @@ dependencies {
     implementation(libs.material)
 
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.core)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

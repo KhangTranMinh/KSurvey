@@ -7,6 +7,7 @@ import com.ktm.ksurvey.data.network.api.RefreshTokenApi
 import com.ktm.ksurvey.data.network.data.FetchProfileRequest
 import com.ktm.ksurvey.data.network.data.LoginRequest
 import com.ktm.ksurvey.data.network.data.LogoutRequest
+import com.ktm.ksurvey.data.network.data.RefreshTokenRequest
 import com.ktm.ksurvey.data.storage.SurveyStore
 import com.ktm.ksurvey.data.storage.UserStore
 import com.ktm.ksurvey.data.util.log
@@ -53,7 +54,7 @@ class UserRepositoryImpl @Inject constructor(
             Result.Error(error = Error.GeneralError(NoUserFoundException()))
         } else {
             val response = refreshTokenApi.execute(
-                request = null
+                RefreshTokenRequest(refreshToken = user.refreshToken)
             )
             if (response.isSuccess()) {
                 val attributes = response.data?.attributes
