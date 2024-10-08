@@ -105,8 +105,8 @@ fun LoginScreenContainer(
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
-        val emailState = remember { mutableStateOf("tran.minhkhang.1989@gmail.com") }
-        val passwordState = remember { mutableStateOf("12345678") }
+        val emailState = remember { mutableStateOf("") }
+        val passwordState = remember { mutableStateOf("") }
 
         val keyboardController = LocalSoftwareKeyboardController.current
 
