@@ -12,12 +12,14 @@ class SurveyUseCase(
     private val surveyRepository: SurveyRepository
 ) {
 
+    var isForceRefresh: Boolean = false
+
     suspend fun getUser(): User? {
         return userRepository.getUser()
     }
 
     suspend fun getSurveys(pageNumber: Int, pageSize: Int): Result<List<Survey>, Error> {
-        return surveyRepository.getSurveys(pageNumber, pageSize)
+        return surveyRepository.getSurveys(isForceRefresh, pageNumber, pageSize)
     }
 
     suspend fun clearSurveyData() {

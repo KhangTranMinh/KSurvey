@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     var homeUiState = MutableStateFlow<HomeUiState>(HomeUiState.Default)
         private set
 
-    var surveyState = MutableStateFlow<PagingData<Survey>>(PagingData.empty())
+    var surveysState = MutableStateFlow<PagingData<Survey>>(PagingData.empty())
         private set
 
     var userState = MutableStateFlow(User())
@@ -55,6 +55,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun setForceRefresh() {
+        surveyUseCase.isForceRefresh = true
+    }
+
     fun fetchSurveys() {
         log("fetchSurveys")
         viewModelScope.launch {
@@ -67,7 +71,7 @@ class HomeViewModel @Inject constructor(
                     SurveyPagingSource(surveyUseCase)
                 }
             ).flow.cachedIn(viewModelScope).collectLatest {
-                surveyState.value = it
+                surveysState.value = it
             }
         }
     }

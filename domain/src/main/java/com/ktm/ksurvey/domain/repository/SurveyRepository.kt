@@ -6,7 +6,11 @@ import com.ktm.ksurvey.domain.repository.result.Result
 
 interface SurveyRepository {
 
-    suspend fun getSurveys(pageNumber: Int, pageSize: Int): Result<List<Survey>, Error>
+    suspend fun getSurveys(
+        isForceRefresh: Boolean,
+        pageNumber: Int,
+        pageSize: Int
+    ): Result<List<Survey>, Error>
 
     suspend fun clearData()
 }

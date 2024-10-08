@@ -92,7 +92,6 @@ import com.ktm.ksurvey.presentation.util.DateTimeUtil
 import com.ktm.ksurvey.presentation.viewmodel.HomeUiState
 import com.ktm.ksurvey.presentation.viewmodel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
@@ -112,11 +111,20 @@ fun HomeScreen(
     val user by homeViewModel.userState.collectAsState()
 
     // use for pager
-    val lazyPagingItems = homeViewModel.surveyState.collectAsLazyPagingItems()
+    val lazyPagingItems = homeViewModel.surveysState.collectAsLazyPagingItems()
     val horizontalPagerState = PagerState(pageCount = { lazyPagingItems.itemCount })
 
     // pull to refresh
     val pullRefreshIndicatorState = remember { mutableStateOf(false) }
+    val onPullToRefresh: () -> Unit = {
+        coroutineScope.launch {
+            pullRefreshIndicatorState.value = true
+            homeViewModel.setForceRefresh()
+            lazyPagingItems.refresh()
+            pullRefreshIndicatorState.value = false
+            horizontalPagerState.animateScrollToPage(0)
+        }
+    }
 
     HomeScreenContainer(
         coroutineScope = coroutineScope,
@@ -128,6 +136,7 @@ fun HomeScreen(
         horizontalPagerState = horizontalPagerState,
         onLogoutClicked = { homeViewModel.logout() },
         onBtnTakeSurveyClicked = onNavigateToThankYouScreen,
+        onPullToRefresh = onPullToRefresh
     )
 
     val context = LocalContext.current
@@ -181,19 +190,12 @@ fun HomeScreenContainer(
     horizontalPagerState: PagerState,
     onLogoutClicked: () -> Unit,
     onBtnTakeSurveyClicked: () -> Unit,
+    onPullToRefresh: () -> Unit,
 ) {
     val pullRefreshState = rememberPullRefreshState(
         refreshing = pullRefreshIndicatorState.value,
         refreshThreshold = 120.dp,
-        onRefresh = {
-            coroutineScope.launch {
-                pullRefreshIndicatorState.value = true
-                delay(1000L)
-                lazyPagingItems.refresh()
-                pullRefreshIndicatorState.value = false
-                horizontalPagerState.animateScrollToPage(0)
-            }
-        }
+        onRefresh = onPullToRefresh
     )
 
     ModalNavigationDrawer(
