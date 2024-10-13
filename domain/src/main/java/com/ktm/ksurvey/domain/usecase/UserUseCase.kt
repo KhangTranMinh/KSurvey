@@ -31,4 +31,8 @@ class UserUseCase(
     suspend fun logout(): Result<Any, Error> {
         return userRepository.logout()
     }
+
+    suspend fun resetPassword(email: String): Result<String, Error> {
+        return userRepository.resetPassword(email)
+    }
 }

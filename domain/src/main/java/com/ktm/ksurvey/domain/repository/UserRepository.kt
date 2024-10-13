@@ -12,6 +12,8 @@ interface UserRepository {
 
     suspend fun logout(): Result<Any, Error>
 
+    suspend fun resetPassword(email: String): Result<String, Error>
+
     suspend fun getUser(): User?
 
     suspend fun clearData()

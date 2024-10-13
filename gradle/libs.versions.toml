@@ -1,5 +1,5 @@
 [versions]
-agp = "8.6.1"
+agp = "8.7.1"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -23,6 +23,7 @@ lottieCompose = "6.5.2"
 navigationCompose = "2.8.2"
 pagingCompose = "3.3.2"
 androidxMaterial = "1.7.3"
+accompanistPermissions = "0.31.1-alpha"
 
 core = "1.6.1"
 mockitoCore = "5.14.1"
@@ -69,6 +70,8 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingCompose" }
 
 androidx-material = { module = "androidx.compose.material:material", version.ref = "androidxMaterial" }
+
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
 mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }

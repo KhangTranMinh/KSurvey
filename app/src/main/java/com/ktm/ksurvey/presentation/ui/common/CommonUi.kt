@@ -23,11 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.ktm.ksurvey.R
 import com.ktm.ksurvey.presentation.ui.theme.ColorBlackTransparent50
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhite
+import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent50
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent70
 import com.ktm.ksurvey.presentation.ui.theme.btnTextStyle
 
@@ -36,6 +39,8 @@ val BUTTON_HEIGHT = 54.dp
 val PADDING_HORIZONTAL = 28.dp
 val MENU_ITEM_HEIGHT = 56.dp
 val MENU_PADDING_HORIZONTAL = 16.dp
+val STATUS_BAR_HEIGHT = 24.dp
+val ACTION_BAR_HEIGHT = 48.dp
 
 val roundedCornerShape = RoundedCornerShape(CORNER_RADIUS)
 
@@ -59,9 +64,10 @@ fun FullScreenImage(
 
 @Composable
 fun DefaultButton(
+    modifier: Modifier = Modifier,
     onBtnClicked: () -> Unit,
     text: String,
-    modifier: Modifier = Modifier
+    enabled: Boolean = true,
 ) {
 
     val currentOnBtnClicked = remember { onBtnClicked }
@@ -71,8 +77,12 @@ fun DefaultButton(
         modifier = modifier
             .fillMaxWidth()
             .height(BUTTON_HEIGHT),
-        colors = ButtonDefaults.buttonColors(containerColor = ColorWhite),
-        shape = roundedCornerShape
+        colors = ButtonDefaults.buttonColors(
+            containerColor = ColorWhite,
+            disabledContainerColor = ColorWhiteTransparent50
+        ),
+        shape = roundedCornerShape,
+        enabled = enabled
     ) {
         Text(
             text = text,
@@ -113,6 +123,47 @@ fun LoadingView(
         CircularProgressIndicator(
             modifier = Modifier.size(48.dp, 48.dp),
             color = ColorWhiteTransparent70
+        )
+    }
+}
+
+@Composable
+fun LoginLogo(modifier: Modifier) {
+    Box(
+        modifier = modifier
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_logo_small),
+            contentDescription = null,
+            modifier = Modifier
+                .align(alignment = Alignment.Center)
+        )
+    }
+}
+
+@Composable
+fun ActionButton(
+    modifier: Modifier,
+    painter: Painter,
+    onClicked: () -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Box(
+        modifier = modifier
+            .size(ACTION_BAR_HEIGHT)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClicked
+            )
+    ) {
+        Image(
+            modifier = Modifier
+                .size(30.dp)
+                .align(alignment = Alignment.Center),
+            painter = painter,
+            contentDescription = null
         )
     }
 }

@@ -14,7 +14,7 @@ The project contains 3 modules:
 2. Data
 
     - This module contains Repository implementations
-    - This module contains Android components (such as Network, Data Soures..) that can be used in Repository implementation
+    - This module contains Android components (such as Network, Data Sources..) that can be used in Repository implementation
 
 3. Presentation
 
@@ -107,15 +107,15 @@ The project includes Unit Test for module **Data** (locate at `data/src/test`)
 The Unit Test is done with `JUnit`, `Mockito`, `Mockk`
 
 1. `LoginApiTest`
-1. `LogoutApiTest`
-1. `RefershTokenApiTest`
-1. `FetchProfileApiTest`
-1. `FetchSurveysApiTest`
-1. `FetchUserDetailsApiTest`
-1. `RoomUserStoreTest`
-1. `RoomSurveyStoreTest`
-1. `UserRepositoryImplTest`
-1. `SurveyRepositoryImplTest`
+2. `LogoutApiTest`
+3. `RefershTokenApiTest`
+4. `FetchProfileApiTest`
+5. `FetchSurveysApiTest`
+6. `FetchUserDetailsApiTest`
+7. `RoomUserStoreTest`
+8. `RoomSurveyStoreTest`
+9. `UserRepositoryImplTest`
+10. `SurveyRepositoryImplTest`
 
 ## Screen record
 

@@ -4,10 +4,12 @@ import com.ktm.ksurvey.data.network.api.FetchProfileApi
 import com.ktm.ksurvey.data.network.api.LoginApi
 import com.ktm.ksurvey.data.network.api.LogoutApi
 import com.ktm.ksurvey.data.network.api.RefreshTokenApi
+import com.ktm.ksurvey.data.network.api.ResetPasswordApi
 import com.ktm.ksurvey.data.network.data.FetchProfileRequest
 import com.ktm.ksurvey.data.network.data.LoginRequest
 import com.ktm.ksurvey.data.network.data.LogoutRequest
 import com.ktm.ksurvey.data.network.data.RefreshTokenRequest
+import com.ktm.ksurvey.data.network.data.ResetPasswordRequest
 import com.ktm.ksurvey.data.storage.SurveyStore
 import com.ktm.ksurvey.data.storage.UserStore
 import com.ktm.ksurvey.domain.entity.User
@@ -22,6 +24,7 @@ class UserRepositoryImpl @Inject constructor(
     private val refreshTokenApi: RefreshTokenApi,
     private val fetchProfileApi: FetchProfileApi,
     private val logoutApi: LogoutApi,
+    private val resetPasswordApi: ResetPasswordApi,
     private val userStore: UserStore,
     private val surveyStore: SurveyStore,
 ) : UserRepository {
@@ -87,6 +90,17 @@ class UserRepositoryImpl @Inject constructor(
             } else {
                 Result.Error(error = Error.ApiError(errorCode = response.errorCode))
             }
+        }
+    }
+
+    override suspend fun resetPassword(email: String): Result<String, Error> {
+        val response = resetPasswordApi.execute(
+            ResetPasswordRequest(ResetPasswordRequest.User(email))
+        )
+        return if (response.isSuccess()) {
+            Result.Success(response.meta?.message ?: "")
+        } else {
+            Result.Error(error = Error.ApiError(errorCode = response.errorCode))
         }
     }
 

@@ -1,7 +1,8 @@
 package com.ktm.ksurvey.presentation.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -40,12 +41,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.ktm.ksurvey.R
+import com.ktm.ksurvey.presentation.ui.common.ACTION_BAR_HEIGHT
 import com.ktm.ksurvey.presentation.ui.common.BUTTON_HEIGHT
 import com.ktm.ksurvey.presentation.ui.common.CORNER_RADIUS
 import com.ktm.ksurvey.presentation.ui.common.DefaultButton
 import com.ktm.ksurvey.presentation.ui.common.FullScreenImage
 import com.ktm.ksurvey.presentation.ui.common.LoadingView
+import com.ktm.ksurvey.presentation.ui.common.LoginLogo
 import com.ktm.ksurvey.presentation.ui.common.PADDING_HORIZONTAL
+import com.ktm.ksurvey.presentation.ui.common.STATUS_BAR_HEIGHT
 import com.ktm.ksurvey.presentation.ui.common.VerticalDivider
 import com.ktm.ksurvey.presentation.ui.common.showToast
 import com.ktm.ksurvey.presentation.ui.theme.ColorWhiteTransparent15
@@ -58,12 +62,14 @@ import com.ktm.ksurvey.presentation.viewmodel.LoginUiState
 fun LoginScreen(
     authViewModel: AuthViewModel = hiltViewModel(),
     onNavigateToHomeScreen: () -> Unit,
+    onNavigateToResetPasswordScreen: () -> Unit,
 ) {
     val loadingState = remember { mutableStateOf(false) }
 
     LoginScreenContainer(
         loadingState = loadingState,
-        authViewModel = authViewModel
+        authViewModel = authViewModel,
+        onForgotClick = onNavigateToResetPasswordScreen
     )
 
     val context = LocalContext.current
@@ -85,7 +91,7 @@ fun LoginScreen(
 
                 is LoginUiState.ErrorException -> {
                     loadingState.value = true
-                    showToast(context, "Error happens!")
+                    showToast(context, "Error happens!!!")
                 }
 
                 LoginUiState.Success -> {
@@ -101,6 +107,7 @@ fun LoginScreen(
 fun LoginScreenContainer(
     loadingState: MutableState<Boolean>,
     authViewModel: AuthViewModel,
+    onForgotClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -113,21 +120,30 @@ fun LoginScreenContainer(
         FullScreenImage(
             painter = painterResource(id = R.drawable.bg_login)
         )
+
         Column(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(horizontal = PADDING_HORIZONTAL)
-                .align(alignment = Alignment.Center)
+                .padding(top = STATUS_BAR_HEIGHT + ACTION_BAR_HEIGHT),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val spaceHeight = 16.dp
-            val topAndBottomSpaceModifier = Modifier
-                .fillMaxWidth()
-                .weight(weight = 1F)
 
-            ImageLogo(topAndBottomSpaceModifier)
+            LoginLogo(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(272.dp)
+            )
             EditTextEmail(emailState)
             VerticalDivider(spaceHeight)
-            EditTextPassword(passwordState)
+            EditTextPassword(
+                passwordState = passwordState,
+                onForgotClick = {
+                    keyboardController?.hide()
+                    onForgotClick()
+                }
+            )
             VerticalDivider(spaceHeight)
             DefaultButton(
                 onBtnClicked = {
@@ -137,9 +153,9 @@ fun LoginScreenContainer(
                         password = passwordState.value
                     )
                 },
-                text = stringResource(R.string.label_login)
+                text = stringResource(R.string.label_login),
+                enabled = emailState.value.isNotBlank() && passwordState.value.isNotBlank()
             )
-            Spacer(topAndBottomSpaceModifier)
         }
 
         if (loadingState.value) {
@@ -147,20 +163,6 @@ fun LoginScreenContainer(
                 modifier = Modifier.fillMaxSize()
             )
         }
-    }
-}
-
-@Composable
-fun ImageLogo(modifier: Modifier) {
-    Box(
-        modifier = modifier
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_logo_small),
-            contentDescription = null,
-            modifier = Modifier
-                .align(alignment = Alignment.Center)
-        )
     }
 }
 
@@ -231,8 +233,11 @@ fun EditTextEmail(
 
 @Composable
 fun EditTextPassword(
-    passwordState: MutableState<String>
+    passwordState: MutableState<String>,
+    onForgotClick: () -> Unit,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     EditTextBox(BUTTON_HEIGHT, CORNER_RADIUS) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -249,7 +254,12 @@ fun EditTextPassword(
             )
             Text(
                 text = stringResource(R.string.label_forgot),
-                style = inputTextStyle
+                style = inputTextStyle,
+                modifier = Modifier.clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    onClick = onForgotClick
+                )
             )
             Spacer(
                 modifier = Modifier.size(16.dp)

@@ -31,6 +31,9 @@ class AuthViewModel @Inject constructor(
     var loginUiState = MutableStateFlow<LoginUiState>(LoginUiState.Default)
         private set
 
+    var resetPasswordUiState = MutableStateFlow<ResetPasswordUiState>(ResetPasswordUiState.Default)
+        private set
+
     fun validateUser() {
         log("validateUser")
         viewModelScope.launch {
@@ -72,6 +75,34 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
+
+    fun resetPassword(email: String) {
+        log("resetPassword($email)")
+        viewModelScope.launch {
+            resetPasswordUiState.value = ResetPasswordUiState.Loading
+            withContext(Dispatchers.Default) {
+                when (val result = userUseCase.resetPassword(email)) {
+                    is Result.Error -> {
+                        when (val error = result.error) {
+                            is Error.ApiError -> {
+                                resetPasswordUiState.value =
+                                    ResetPasswordUiState.ErrorCode(error.errorCode)
+                            }
+
+                            is Error.GeneralError -> {
+                                resetPasswordUiState.value =
+                                    ResetPasswordUiState.ErrorException(error.throwable)
+                            }
+                        }
+                    }
+
+                    is Result.Success -> {
+                        resetPasswordUiState.value = ResetPasswordUiState.Success(result.data)
+                    }
+                }
+            }
+        }
+    }
 }
 
 sealed class LoginUiState {
@@ -80,6 +111,14 @@ sealed class LoginUiState {
     data object Success : LoginUiState()
     data class ErrorCode(val errorCode: Int) : LoginUiState()
     data class ErrorException(val throwable: Throwable) : LoginUiState()
+}
+
+sealed class ResetPasswordUiState {
+    data object Default : ResetPasswordUiState()
+    data object Loading : ResetPasswordUiState()
+    data class Success(val message: String) : ResetPasswordUiState()
+    data class ErrorCode(val errorCode: Int) : ResetPasswordUiState()
+    data class ErrorException(val throwable: Throwable) : ResetPasswordUiState()
 }
 
 sealed class SplashUiState {

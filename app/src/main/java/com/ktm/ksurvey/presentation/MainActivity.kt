@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.ktm.ksurvey.presentation.ui.navigation.AppNavHost
 import com.ktm.ksurvey.presentation.ui.theme.KSurveyTheme
+import com.ktm.ksurvey.presentation.util.NotificationHandler
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,5 +32,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+
+        NotificationHandler(this).createNotificationChannel()
     }
 }

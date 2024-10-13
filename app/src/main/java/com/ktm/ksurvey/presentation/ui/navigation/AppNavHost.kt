@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ktm.ksurvey.presentation.ui.screen.HomeScreen
 import com.ktm.ksurvey.presentation.ui.screen.LoginScreen
+import com.ktm.ksurvey.presentation.ui.screen.ResetPasswordScreen
 import com.ktm.ksurvey.presentation.ui.screen.SplashScreen
 import com.ktm.ksurvey.presentation.ui.screen.ThankYouScreen
 
@@ -41,6 +42,17 @@ fun AppNavHost(
                 onNavigateToHomeScreen = {
                     navController.popBackStack()
                     navController.navigate(route = AppScreen.HOME.name)
+                },
+                onNavigateToResetPasswordScreen = {
+                    navController.navigate(route = AppScreen.RESET_PASSWORD.name)
+                }
+            )
+        }
+        composable(route = AppScreen.RESET_PASSWORD.name) {
+            ResetPasswordScreen(
+                onNavigateToLoginScreen = {
+                    navController.popBackStack()
+                    navController.navigate(route = AppScreen.LOGIN.name)
                 }
             )
         }

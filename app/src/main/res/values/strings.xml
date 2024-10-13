@@ -8,4 +8,7 @@
     <string name="label_take_this_survey">Take This Survey</string>
     <string name="label_logout">Logout</string>
     <string name="label_today">Today</string>
+    <string name="label_reset">Reset</string>
+    <string name="label_reset_desc">Enter your email to receive instructions for resetting your password.</string>
+    <string name="notification_title_check_email">Check your email</string>
 </resources>
